@@ -313,15 +313,345 @@ El nombre de la variable que pasamos como argumento (`michael`) no tiene nada qu
 el nombre del parámetro (`bruce`). No importa cómo se llamó el valor en casa (en la 
 función que llama); aquí en `print_twice`, llamamos a todos` bruce`.
 
-Variables and parameters are local
-----------------------------------
+Las variables y los parámetros son locales
+------------------------------------------
+
+Cuando crea una variable dentro de una función, esta es **local**, lo que significa que 
+solo existe dentro de la función. Por ejemplo:
+
+    def cat_twice(part1, part2):
+        cat = part1 + part2
+        print_twice(cat)
+
+Esta función toma dos argumentos, los concatena e imprime el resultado dos veces. Aquí hay un ejemplo que lo usa:
+
+    >>> line1 = 'Bing tiddle '
+    >>> line2 = 'tiddle bang.'
+    >>> cat_twice(line1, line2)
+    Bing tiddle tiddle bang.
+    Bing tiddle tiddle bang.
+
+Cuando `cat_twice` termina, la variable `cat` se destruye. Si tratamos de imprimirla, 
+obtenemos un mensaje de error:
+
+    >>> print(cat)
+    NameError: name 'cat' is not defined
+
+Los parámetros también son locales. Por ejemplo, afuera de `print_twice`, no existe algo  
+como `bruce`.
+
+Diagramas de pila
+-----------------
+
+Para realizar un seguimiento de las variables que se pueden usar, es útil dibujar 
+un **diagrama de pila**. Al igual que los diagramas de estado, los diagramas de pila 
+muestran el valor de cada variable, pero también muestran la función a la que pertenece 
+cada variable.
+
+Cada función está representada por **marco**. Un marco es un cuadro con el nombre de una 
+función al lado y los parámetros y variables de la función dentro de él. El diagrama de 
+pila para el ejemplo anterior se muestra en la Figura \ [fig.stack \].
+
+![Stack diagram.[]{data-label="fig.stack"}](figs/stack.pdf)
+
+Los marcos están dispuestos en una pila que indica qué función llamó a qué, y así 
+sucesivamente. En este ejemplo, `print_twice` fue llamado por `cat_twice`, y `cat_twice` 
+fue llamado por `__main__`, que es un nombre especial para el marco superior. Cuando creas 
+una variable fuera de cualquier función, pertenece a `__main__`.
+
+Cada parámetro se refiere al mismo valor que su argumento correspondiente. Entonces, 
+`part1` tiene el mismo valor que `line1`, `part2` tiene el mismo valor que `line2`, y 
+`bruce` tiene el mismo valor que `cat`.
+
+Si se produce un error durante una llamada de función, Python imprime el nombre de
+ésta, el nombre de la función que la llamó, y así sucesivamente hasta llegar de regreso a 
+`__main__`.
+
+Por ejemplo, si intentas acceder a `cat` desde `print_twice`, obtienes un *error de nombre* (`NameError`):
+
+    Traceback (innermost last):
+      File "test.py", line 13, in __main__
+        cat_twice(line1, line2)
+      File "test.py", line 5, in cat_twice
+        print_twice(cat)
+      File "test.py", line 9, in print_twice
+        print(cat)
+    NameError: name 'cat' is not defined
+
+Esta lista de funciones se denomina **trazado inverso** (**traceback**). Te dice en qué 
+archivo de programa se produjo el error, qué línea y qué funciones se estaban ejecutando 
+en ese momento. También muestra la línea de código que causó el error.
+
+El orden de las funciones en el trazado inverso es el mismo que el orden de los marcos en 
+el diagrama de la pila. La función que se está ejecutando actualmente se encuentra en la 
+parte inferior.
+
+Funciones fructíferas y funciones vacías
+----------------------------------------
+
+Algunas de las funciones que hemos utilizado, como las funciones matemáticas, devuelven 
+resultados; a falta de un mejor nombre, las llamaremos **funciones fructíferas**. Otras 
+funciones, como `print_twice`, realizan una acción pero no devuelven un valor. Las 
+llamaremos **funciones vacías**.
+
+Cuando llamas a una función fructífera, casi siempre quieres hacer algo con el resultado; 
+por ejemplo, puede asignarlo a una variable o usarlo como parte de una expresión:
+    
+    x = math.cos(radians)
+    golden = (math.sqrt(5) + 1) / 2
+
+Cuando llamas a una función en modo interactivo, Python muestra el resultado:
+
+    >>> math.sqrt(5)
+    2.2360679774997898
+
+¡Pero en un guión, si llamas a una función fructífera por sí misma, el valor de retorno se 
+pierde!
+
+    math.sqrt(5)
+
+Este script calcula la raíz cuadrada de 5, pero como no almacena ni muestra el resultado, no es muy útil.
+
+Las funciones vacías pueden mostrar algo en la pantalla o tener algún otro efecto, pero no tienen un valor de retorno. Si asigna el resultado a una variable, obtiene un valor especial llamado `None`.
+
+    >>> result = print_twice('Bing')
+    Bing
+    Bing
+    >>> print(result)
+    None
+
+El valor `None` no es lo mismo que la cadena `'None'`. Es un valor especial que tiene su 
+propio tipo:
+
+    >>> type(None)
+    <class 'NoneType'>
+
+Las funciones que hemos escrito hasta ahora son *vacías*. Comenzaremos a escribir 
+funciones fructíferas en algunos capítulos.
+
+¿Por qué funciones?
+-------------------
+
+Puede que no esté claro por qué vale la pena dividir un programa en funciones. Hay varias 
+razones:
+
+- Crear una nueva función te da la oportunidad de nombrar un grupo de instrucciones, lo 
+  que hace que tu programa sea más fácil de leer y depurar.
+
+- Las funciones pueden hacer que un programa sea más pequeño al eliminar el código 
+  repetitivo. Más tarde, si haces un cambio, solo tienes que hacerlo en un solo lugar.
+
+- La división de un programa largo en funciones te permite depurar las partes de una en 
+  una y luego ensamblarlas en un todo.
+
+- Las funciones bien diseñadas a menudo son útiles para muchos programas. Una vez que 
+  escribe y depura uno, puede reutilizarlo.
+
+Depuración
+----------
+
+Una de las habilidades más importantes que adquirirás es la depuración. Aunque puede ser 
+frustrante, la depuración es una de las partes de la programación más intelectualmente 
+rica, desafiante e interesante.
+
+En cierto modo, la depuración es como el trabajo de detective. Te enfrentas a pistas y 
+tienes que inferir los procesos y eventos que llevaron a los resultados que ves.
+
+La depuración también es como una ciencia experimental. Una vez que tenga una idea de lo 
+que está pasando mal, modifique su programa y vuelva a intentarlo. Si su hipótesis es 
+correcta, puede predecir el resultado de la modificación y dar un paso más hacia un 
+programa en funcionamiento. Si su hipótesis era incorrecta, tiene que encontrar una nueva. 
+Como señaló Sherlock Holmes, "cuando eliminas lo imposible, lo que queda, aunque sea 
+improbable, debe ser la verdad". (A. Conan Doyle, *The Sign of Four*)
+
+Para algunas personas, la programación y la depuración son la misma cosa. Es decir, la 
+programación es el proceso de depuración gradual de un programa hasta que haga lo que uno 
+desea. La idea es que debes comenzar con un programa que funcione y realizar pequeñas 
+modificaciones, depurándolo a medida que avanzas.
+
+Por ejemplo, Linux es un sistema operativo que contiene millones de líneas de código, pero 
+comenzó como un simple programa que Linus Torvalds utilizó para explorar el chip Intel 
+80386. Según Larry Greenfield, "Uno de los proyectos anteriores de Linus era un programa 
+que cambiaría entre imprimir AAAA y BBBB. Esto evolucionó luego a Linux." 
+(*The Linux Users’ Guide* Beta Version 1).
 
 Glosario
 --------
 
+función:
+
+:   Una secuencia de declaraciones con nombre que realiza alguna operación útil. Las funciones pueden o no tomar argumentos y pueden o no producir un resultado.
+
+definición de la función:
+
+:   Una instrucción que crea una nueva función, especificando su nombre, parámetros y las instrucciones que contiene.
+
+objeto de función:
+
+:   Un valor creado por una definición de función. El nombre de la función es una variable que hace referencia a un objeto de función.
+
+encabezado:
+
+:   La primera línea de una definición de función.
+
+cuerpo:
+
+:   La secuencia de instrucciones dentro de una definición de función.
+
+parámetro:
+
+:   Un nombre utilizado dentro de una función para referirse al valor pasado como argumento.
+
+Llamada de función:
+
+:   Una instrucción que ejecuta una función. Consiste en el nombre de la función seguido de una lista de argumentos entre paréntesis.
+
+argumento:
+
+:   Un valor proporcionado a una función cuando se llama a la función. Este valor se asigna al parámetro correspondiente en la función.
+
+variable local:
+
+:   Una variable definida dentro de una función. Una variable local solo puede usarse dentro de su función.
+
+valor de retorno:
+
+:   El resultado de una función. Si una llamada a función se usa como una expresión, el valor de retorno es el valor de la expresión.
+
+función fructífera:
+
+:   Una función que devuelve un valor.
+
+función vacía:
+
+:   Una función que siempre devuelve `None`.
+
+`None`:
+
+:   Un valor especial devuelto por las funciones vacías.
+
+módulo:
+
+:   Un archivo que contiene una colección de funciones relacionadas y otras definiciones.
+
+instrucción de importación:
+
+:   Una instrucción que lee un archivo de módulo y crea un objeto de módulo.
+
+objeto de módulo:
+
+:   Un valor creado por una instrucción `import` que proporciona acceso a los valores definidos en un módulo.
+
+notación de punto:
+
+:   La sintaxis para llamar a una función en otro módulo especificando el nombre del módulo seguido de un punto y el nombre de la función.
+
+composición:
+
+:   Usar una expresión como parte de una expresión más grande, o una declaración como parte de una declaración más grande.
+
+flujo de ejecución:
+
+:   El orden en que las instrucciones se ejecutan.
+
+diagrama de pila:
+
+:   Una representación gráfica de una pila de funciones, sus variables y los valores a los que se refieren.
+
+marco:
+
+:   Un cuadro en un diagrama de pila que representa una llamada a función. Contiene las variables locales y los parámetros de la función.
+
+trazado inverso:
+
+:   Una lista de las funciones que se están ejecutando, impresas cuando ocurre un error.
+
 Ejercicios
 ----------
 
+## Ejercicio 1
+
+Escribe una función llamada `right_justify` que toma una cadena llamada `s` como parámetro 
+e imprime la cadena con suficientes espacios iniciales para que la última letra de la 
+cadena esté en la columna 70 de la pantalla.
+
+    >>> right_justify('monty')
+                                                                     monty
+
+Sugerencia: utilice la concatenación de cadenas y la repetición. Además, Python 
+proporciona una función integrada llamada `len` que devuelve la longitud de una cadena, 
+por lo que el valor de `len ('monty')` es 5.
+
+## Ejercicio 2
+
+Un objeto de función es un valor que puede asignar a una variable o pasar como un 
+argumento. Por ejemplo, `do_twice` es una función que toma un objeto de función como 
+argumento y lo llama dos veces:
+
+    def do_twice(f):
+        f()
+        f()
+
+Aquí hay un ejemplo que usa `do_twice` para llamar a una función llamada `print_spam` dos 
+veces.
+
+    def print_spam():
+        print('spam')
+
+    do_twice(print_spam)
+
+1. Escribe este ejemplo en un script y pruébelo.
+
+2. Modifica `do_twice` para que tome dos argumentos, un objeto de función y un valor, y llama a la función dos veces, pasando el valor como un argumento.
+
+3. Copia la definición de `print_twice` de este capítulo a tu script.
+
+4. Utiliza la versión modificada de `do_twice` para llamar `print_twice` dos veces, pasando `'spam'` como argumento.
+
+5. Defina una nueva función llamada `do_four` que toma un objeto de función y un valor y 
+llama a la función cuatro veces, pasando el valor como parámetro. Debería haber solo dos 
+enunciados en el cuerpo de esta función, no cuatro.
+
+Solution: <http://thinkpython2.com/code/do_four.py>.
+
+## Ejercicio 3
+
+Nota: Este ejercicio debe hacerse usando solo las instrucciones y otras características 
+que hemos aprendido hasta ahora.
+
+1. Escribe una función que dibuje una cuadrícula como la siguiente:
+
+        + - - - - + - - - - +
+        |         |         |
+        |         |         |
+        |         |         |
+        |         |         |
+        + - - - - + - - - - +
+        |         |         |
+        |         |         |
+        |         |         |
+        |         |         |
+        + - - - - + - - - - +
+
+    Sugerencia: para imprimir más de un valor en una línea, puede imprimir en una 
+    secuencia de valores separados por comas:
+
+        print('+', '-')
+
+    Por defecto, `print` avanza a la siguiente línea, pero puede anular ese comportamiento 
+    y poner un espacio al final, como este:
+
+        print('+', end=' ')
+        print('-')
+
+    La salida de estas instrucciones es `'+ -'` en la misma línea. El resultado de la 
+    próxima instrucción de impresión comenzaría en la siguiente línea.
+
+2. Escribe una función que dibuje una cuadrícula similar con cuatro filas y cuatro 
+   columnas.
+
+Solución: <http://thinkpython2.com/code/grid.py>. Crédito: Este ejercicio se basa en un 
+ejercicio de Oualline, *Practical C Programming, Third Edition*, O’Reilly Media, 1997.
 
 [*Think Python: How to Think Like a Computer Scientist*](http://www.thinkpython2.com)
 
