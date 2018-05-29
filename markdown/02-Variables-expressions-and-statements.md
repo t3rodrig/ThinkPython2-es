@@ -394,6 +394,8 @@ error semántico:
 Ejercicios
 ----------
 
+### Ejercicio 1
+
 Repitiendo mi consejo del capítulo anterior, cada vez que aprenda una nueva característica, debe probarla en modo interactivo y cometer errores a propósito para ver qué falla.
 
 - Hemos visto que `n = 42` es legal. ¿Qué pasa con `42 = n`?
@@ -408,6 +410,8 @@ Repitiendo mi consejo del capítulo anterior, cada vez que aprenda una nueva car
 - En notación matemática puedes multiplicar $x$ y $y$ así: 
   $x y$. ¿Qué pasa si pruebas eso en Python?
   
+### Ejercicio 2
+
 Practica usando el intérprete de Python como una calculadora:
 
 1. El volumen de una esfera con radio $r$ es $\frac{4}{3} \pi r^3$. 

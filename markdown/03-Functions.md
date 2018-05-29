@@ -569,7 +569,7 @@ trazado inverso:
 Ejercicios
 ----------
 
-## Ejercicio 1
+### Ejercicio 1
 
 Escribe una función llamada `right_justify` que toma una cadena llamada `s` como parámetro 
 e imprime la cadena con suficientes espacios iniciales para que la última letra de la 
@@ -582,7 +582,7 @@ Sugerencia: utilice la concatenación de cadenas y la repetición. Además, Pyth
 proporciona una función integrada llamada `len` que devuelve la longitud de una cadena, 
 por lo que el valor de `len ('monty')` es 5.
 
-## Ejercicio 2
+### Ejercicio 2
 
 Un objeto de función es un valor que puede asignar a una variable o pasar como un 
 argumento. Por ejemplo, `do_twice` es una función que toma un objeto de función como 
@@ -614,7 +614,7 @@ enunciados en el cuerpo de esta función, no cuatro.
 
 Solution: <http://thinkpython2.com/code/do_four.py>.
 
-## Ejercicio 3
+### Ejercicio 3
 
 Nota: Este ejercicio debe hacerse usando solo las instrucciones y otras características 
 que hemos aprendido hasta ahora.
