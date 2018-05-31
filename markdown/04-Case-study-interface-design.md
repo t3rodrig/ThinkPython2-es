@@ -408,8 +408,80 @@ Escribir este tipo de documentación es una parte importante del diseño de la i
 interfaz bien diseñada debe ser simple de explicar; si tienes dificultades para explicar 
 una de tus funciones, tal vez la interfaz podría mejorarse.
 
+Depuración
+----------
+
+Una interfaz es como un contrato entre una función y una persona que llama. La persona que 
+llama acepta proporcionar ciertos parámetros y la función acepta realizar cierto trabajo.
+
+Por ejemplo, `polyline` requiere cuatro argumentos: `t` tiene que ser una Tortuga; `n` 
+tiene que ser un número entero; `length` debe ser un número positivo; y `angle` tiene que 
+ser un número, que se entiende en grados.
+
+Estos requisitos se llaman **precondiciones** porque se supone que son verdaderos antes de 
+que la función comience a ejecutarse. Por el contrario, las condiciones al final de la 
+función son **postcondiciones**. Las postcondiciones incluyen el efecto deseado de la 
+función (como dibujar segmentos de línea) y cualquier efecto secundario (como mover la 
+tortuga o hacer otros cambios).
+
+Las condiciones previas son responsabilidad de quien llama. Si la persona que llama viola 
+una condición previa (documentada adecuadamente) y la función no funciona correctamente, 
+el error está en la persona que llama, no en la función.
+
+Si se cumplen las condiciones previas y las postcondiciones no, el error está en la 
+función. Si sus condiciones previas y posteriores son claras, pueden ayudar con la 
+depuración.
+
 Glosario
 --------
+
+método:
+
+:   Una función que se asocia con un objeto y se llama mediante notación de punto.
+
+bucle:
+
+:   Una parte de un programa que puede ejecutarse repetidamente.
+
+encapsulación:
+
+:   El proceso de transformar una secuencia de enunciados en una definición de función.
+
+generalización:
+
+:   El proceso de reemplazar algo innecesariamente específico (como un número) con algo 
+    apropiadamente general (como una variable o parámetro).
+
+argumento de palabra clave:
+
+:   Un argumento que incluye el nombre del parámetro como una "palabra clave".
+
+interfaz:
+
+:   Una descripción de cómo usar una función, incluido el nombre y las descripciones de 
+    los argumentos y el valor de retorno.
+
+refactorización:
+
+:   El proceso de modificación de un programa para mejorar las interfaces de funciones y 
+    otras cualidades del código.
+
+plan de Desarrollo:
+
+:   Un proceso para escribir programas.
+
+docstring:
+
+:   Una cadena de texto que aparece en la parte superior de una definición de función para 
+    documentar la interfaz de la función.
+
+condición previa:
+
+:   Un requisito que debe cumplir la persona que llama antes de que comience una función.
+
+postcondición:
+
+:   Un requisito que debe cumplir la función antes de que finalice.
 
 Ejercicios
 ----------
